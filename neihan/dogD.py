@@ -1,6 +1,6 @@
 # coding:utf-8
 
-# CREATE TABLE `dogTable` (
+# CREATE TABLE `neihanDogTable` (
 #   `Id` int(11) NOT NULL AUTO_INCREMENT,
 #   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
 #   `digg_count` varchar(255) DEFAULT NULL COMMENT '赞数',
@@ -8,6 +8,7 @@
 #   `url` varchar(255) DEFAULT NULL COMMENT '网址',
 #   `category_name` varchar(255) DEFAULT NULL COMMENT '类别',
 #   `comments` varchar(255) DEFAULT NULL COMMENT '神评',
+#   `time_param` varchar(255) DEFAULT NULL COMMENT '时间参数',
 #   PRIMARY KEY (`Id`)
 # ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='内涵宠物表';
 import datetime
@@ -20,14 +21,14 @@ import pymysql
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-def insertChatContent(create_time,digg_count,content,url,category_name,comments):
+def insertChatContent(create_time,digg_count,content,url,category_name,comments,maxtime):
 	# 连接数据库  
 	connect = pymysql.Connect(  
 		host='127.0.0.1',
 		port=3306,  
 		user='root',  
 		passwd='123456',  
-		db='neihanduanzi',  
+		db='duanzi',  
 		charset='utf8mb4'  
 	)  
 	  
@@ -36,7 +37,7 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments)
 	now = datetime.datetime.now()
 	createtime=now.strftime('%Y-%m-%d %H:%M:%S')  
 	# 插入数据  
-	sql = "INSERT INTO dogTable (create_time,digg_count,content,url,category_name,comments) VALUES ( '%s', '%s', '%s','%s','%s','%s')"  
+	sql = "INSERT INTO neihanDogTable (create_time,digg_count,content,url,category_name,comments,time_param) VALUES ( '%s', '%s', '%s','%s','%s','%s','%s')"  
 	print sql
 	# create_time = pymysql.escape_string(create_time)
 	# print create_time
@@ -45,14 +46,15 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments)
 	downUrl = pymysql.escape_string(url)
 	category = pymysql.escape_string(category_name)
 	comment = pymysql.escape_string(comments)
+	time_param = pymysql.escape_string(maxtime)
 
-	data = (createtime,digg_count,savecontent,downUrl,category,comment)  
+	data = (createtime,digg_count,savecontent,downUrl,category,comments,time_param)  
 	# print data
 	cursor.execute(sql % data)  
 	connect.commit()  
 	print('insert success', cursor.rowcount, ' record')
 def getContent():
-	maxtime=1510035012
+	maxtime=1510029120
 	while True:
 		try:
 			maxtime=maxtime-2
@@ -93,7 +95,7 @@ def getContent():
 										comments='无神评'
 
 									print category_name+ comments
-									insertChatContent(joker['group']['create_time'],joker['group']['digg_count'],content,joker['group']['download_url'],category_name,comments)
+									insertChatContent(joker['group']['create_time'],joker['group']['digg_count'],content,joker['group']['download_url'],category_name,comments,str(maxtime))
 							# bury_count 踩 comment_count 评论 share_count 转发 comments array。count》0 神评 category_name 类型 
 							# share_url for 101
 			time.sleep(30)

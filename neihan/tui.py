@@ -16,5 +16,5 @@ for index,url in enumerate(urlList):
 	print index+1
 	downloadUrl=url['url']
 	title=index+1
-	path='/Volumes/my/内涵段子/魔术/%s.mp4'%title
+	path='/Volumes/my/内涵段子/魔术视频/%s.mp4'%title
 	urllib.urlretrieve(downloadUrl, path)    
