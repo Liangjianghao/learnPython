@@ -27,7 +27,9 @@ try:
         # 执行sql语句，进行查询
         # sql = "SELECT distinct url FROM (SELECT  * FROM duanzi.neihanHotTable order by digg_count desc) as mytable"
         # sql = "SELECT * FROM duanzi.neihanHotTable group by url order by digg_count desc"
-        sql = "SELECT * FROM duanzi.neihanHotTable"
+        # sql='SELECT * FROM duanzi.neihanRemenTable where category_name="今天长这样" group by url order by digg_count desc ;'
+        sql='SELECT * FROM duanzi.neihanRemenTable group by url order by digg_count desc ;'
+        # sql = "SELECT * FROM duanzi.neihanHotTable"
         
         cursor.execute(sql)
         # 获取查询结果
@@ -47,7 +49,7 @@ for index,each in enumerate(result):
 	digg_count= str(int(each['digg_count'])/10000)+'w'
 	# print each['content']
 	# print each['comments']
-	path='/Volumes/my/test/%s'%category_name
+	path='/Volumes/my/test3/%s'%category_name
 	isExists=os.path.exists(path)
 
 	if not isExists:

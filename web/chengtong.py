@@ -70,7 +70,7 @@ def fillPage(driver):
 		contentList=driver.find_elements_by_link_text('相声大全')
 		contentList[0].click()
 		time.sleep(2)
-		contentList2=driver.find_elements_by_link_text('gdg')
+		contentList2=driver.find_elements_by_link_text('丑娘娘')
 		# print len(contentList2)
 		contentList2[0].click()
 		
@@ -101,25 +101,30 @@ def fillPage(driver):
 		# 	print x.get_attribute('class')
 		# 	print x.get_attribute('name')
 		# print nextPage[len(nextPage)-2].text
-		pageNum=int(nextPage[len(nextPage)-2].text)-1
-		print pageNum
-		for x in xrange(1,pageNum):
-			print 'page'+str(x）
-			nextPage=driver.find_elements_by_class_name('paginate_button')
-			nextPage2=nextPage[len(nextPage)-1].find_element_by_tag_name('a')
-			nextPage2.click()
-			time.sleep(3)
-			selector = html.fromstring(driver.page_source)
-			# hrefs=selector.xpath('//div[@id="table_files_wrapper"]')
-			hrefs=selector.xpath('//table/tbody/tr')
-			print len(hrefs)
-			for href in hrefs:
-				name=href.xpath('td/div/a')
-				# print name[0].text
-				url=href.xpath('td/div/a/@href')
-				# print url[0]
-				fo.write(name[0].text+' '+url[0]+'\n')
-			time.sleep(3)
+
+
+		
+		# pageNum=int(nextPage[len(nextPage)-2].text)-1
+		# print pageNum
+		# for x in xrange(1,pageNum):
+		# 	# print 'page'+str(x）
+		# 	nextPage=driver.find_elements_by_class_name('paginate_button')
+		# 	nextPage2=nextPage[len(nextPage)-1].find_element_by_tag_name('a')
+		# 	nextPage2.click()
+		# 	time.sleep(3)
+		# 	selector = html.fromstring(driver.page_source)
+		# 	# hrefs=selector.xpath('//div[@id="table_files_wrapper"]')
+		# 	hrefs=selector.xpath('//table/tbody/tr')
+		# 	print len(hrefs)
+		# 	for href in hrefs:
+		# 		name=href.xpath('td/div/a')
+		# 		# print name[0].text
+		# 		url=href.xpath('td/div/a/@href')
+		# 		# print url[0]
+		# 		fo.write(name[0].text+' '+url[0]+'\n')
+		# 	time.sleep(3)
+
+
 
 		# while 1:
 		# 	if not nextPage2.text:
@@ -180,7 +185,7 @@ def fillPage(driver):
 
 
 path=os.path.split( os.path.realpath( sys.argv[0] ) )[0]  
-fo=open('%s/gdg.txt'%(path),'w')
+fo=open('%s/gdg2.txt'%(path),'w')
 
 driver=loadPage('1084933098@qq.com')
 fillPage(driver)

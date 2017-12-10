@@ -43,21 +43,42 @@ def loadPage(zhanghao):
 	elemMM.send_keys("l31415926")
 
 	return driver
+# def cutStr(name):
+# 	resultStr=''
+# 	if ' ' in name :
+# 		for index,NameStr in enumerate(name.split(' ')):
+# 			if index==0:
+# 				continue
+# 			else:
+# 				resultStr+=NameStr
+# 	else:
+# 		resultStr=name
+# 	resultStr=resultStr.split('.')[0]
+# 	resultStr=resultStr.replace('（','').replace('）','').replace('《','').replace('》',' ')
+# 	resultStr=re.sub(r"[\t,^\d{n}]",'',resultStr)
+# 	return resultStr
 def cutStr(name):
 	resultStr=''
+	d={}  
+	for c in name:   
+	    d[c] = (d[c] + 1) if (c in d) else (1)   
+	# print d[' '] 
 	if ' ' in name :
-		for index,NameStr in enumerate(name.split(' ')):
-			if index==0:
-				continue
-			else:
+		if d[' ']>1:
+			for index,NameStr in enumerate(name.split(' ')):
+				if index==0:
+					continue
+				else:
+					resultStr+=NameStr
+		else:
+			for index,NameStr in enumerate(name.split(' ')):
 				resultStr+=NameStr
 	else:
 		resultStr=name
 	resultStr=resultStr.split('.')[0]
-	resultStr=resultStr.replace('（','').replace('）','').replace('《','').replace('》',' ')
+	resultStr=resultStr.replace('（','').replace('）','').replace('《','').replace('》',' ').replace('高清',' ')
 	resultStr=re.sub(r"[\t,^\d{n}]",'',resultStr)
 	return resultStr
-
 def fillPage(driver):
 	mineBtn = driver.find_elements_by_class_name("btn_login")
 	mineBtn[0].click()
