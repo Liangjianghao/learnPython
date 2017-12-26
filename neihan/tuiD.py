@@ -28,7 +28,7 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 		port=3306,  
 		user='root',  
 		passwd='123456',  
-		db='duanzi',  
+		db='neihanduanzi',  
 		charset='utf8mb4'  
 	)  
 	  
@@ -53,8 +53,8 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 	cursor.execute(sql % data)  
 	connect.commit()  
 	print('insert success', cursor.rowcount, ' record')
-def getContent():
-	maxtime=1512641216
+def getContent(timeT):
+	maxtime=timeT
 	while maxtime>1512366724:
 		try:
 			maxtime=maxtime-2
@@ -101,4 +101,6 @@ def getContent():
 			time.sleep(30)
 		except Exception as e:
 			raise
-getContent()
+if __name__ == "__main__":
+
+	getContent(timeT)

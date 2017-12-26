@@ -1,16 +1,16 @@
 # coding:utf-8
 
-# CREATE TABLE `neihanDogTable` (
-#   `Id` int(11) NOT NULL AUTO_INCREMENT,
-#   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-#   `digg_count` varchar(255) DEFAULT NULL COMMENT '赞数',
-#   `content` varchar(255) DEFAULT NULL COMMENT '内容',
-#   `url` varchar(255) DEFAULT NULL COMMENT '网址',
-#   `category_name` varchar(255) DEFAULT NULL COMMENT '类别',
-#   `comments` varchar(255) DEFAULT NULL COMMENT '神评',
-#   `time_param` varchar(255) DEFAULT NULL COMMENT '时间参数',
-#   PRIMARY KEY (`Id`)
-# ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='内涵宠物表';
+CREATE TABLE `neihanErhaTable` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `digg_count` varchar(255) DEFAULT NULL COMMENT '赞数',
+  `content` varchar(255) DEFAULT NULL COMMENT '内容',
+  `url` varchar(255) DEFAULT NULL COMMENT '网址',
+  `category_name` varchar(255) DEFAULT NULL COMMENT '类别',
+  `comments` varchar(255) DEFAULT NULL COMMENT '神评',
+  `time_param` int(11) DEFAULT NULL COMMENT '时间参数',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='内涵贱宠表';
 import datetime
 import time 
 import requests
@@ -18,6 +18,7 @@ import json
 import sys
 import os
 import pymysql
+import tool
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -28,7 +29,7 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 		port=3306,  
 		user='root',  
 		passwd='123456',  
-		db='duanzi',  
+		db='neihanduanzi',  
 		charset='utf8mb4'  
 	)  
 	  
@@ -37,11 +38,8 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 	now = datetime.datetime.now()
 	createtime=now.strftime('%Y-%m-%d %H:%M:%S')  
 	# 插入数据  
-	sql = "INSERT INTO neihanDogTable (create_time,digg_count,content,url,category_name,comments,time_param) VALUES ( '%s', '%s', '%s','%s','%s','%s','%s')"  
-	print sql
-	# create_time = pymysql.escape_string(create_time)
-	# print create_time
-	# content_type = pymysql.escape_string(content_type)
+	sql = "INSERT INTO neihanErhaTable (create_time,digg_count,content,url,category_name,comments,time_param) VALUES ( '%s', '%s', '%s','%s','%s','%s','%s')"  
+	# print sql
 	savecontent = pymysql.escape_string(content)
 	downUrl = pymysql.escape_string(url)
 	category = pymysql.escape_string(category_name)
@@ -52,16 +50,16 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 	# print data
 	cursor.execute(sql % data)  
 	connect.commit()  
-	print('insert success', cursor.rowcount, ' record')
-def getContent():
-	maxtime=1510029120
-	while True:
+	# print('insert success', cursor.rowcount, ' record')
+
+def getContent(timeT):
+	maxtime=timeT
+	mintime=time.time()-86400
+	while maxtime>mintime:
 		try:
 			maxtime=maxtime-2
 			url='http://is.snssdk.com/neihan/stream/category/data/v2/?tag=joke&iid=12316421155&os_version=10.1.1&os_api=18&live_sdk_version=220&channel=App%%20Store&idfa=E8131C7D-8AD5-45A0-8E6A-5F97A90CA5A9&device_platform=iphone&app_name=joke_essay&vid=20FC79DA-3103-42B3-A92E-F2D58B8DFD34&openudid=25adf6c3bb1f51523606523f4252e49e3c619921&device_type=iPhone9,1&device_id=30277977392&ac=WIFI&screen_width=750&aid=7&version_code=6.4.1&category_id=9&count=30&level=6&max_time=%s&message_cursor=175514038&mpic=1&video_cdn_first=1'%maxtime
-			# url='http://is.snssdk.com/neihan/stream/category/data/v2/?tag=joke&iid=12316421155&os_version=10.1.1&os_api=18&live_sdk_version=220&channel=App%%20Store&idfa=E8131C7D-8AD5-45A0-8E6A-5F97A90CA5A9&device_platform=iphone&app_name=joke_essay&vid=20FC79DA-3103-42B3-A92E-F2D58B8DFD34&openudid=25adf6c3bb1f51523606523f4252e49e3c619921&device_type=iPhone9,1&device_id=30277977392&ac=WIFI&screen_width=750&aid=7&version_code=6.4.1&category_id=12&count=30&level=6&max_time=%s&message_cursor=175514038&mpic=1&video_cdn_first=1'%maxtime
-			# url=getUrl()
-			# print url
+			print url
 			response=requests.get(url).content
 			# print response
 			jsonData = json.loads(response)
@@ -101,4 +99,8 @@ def getContent():
 			time.sleep(30)
 		except Exception as e:
 			raise
-getContent()
+
+
+if __name__ == "__main__":
+
+	getContent(timeT)

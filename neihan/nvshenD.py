@@ -8,7 +8,7 @@
 #   `url` varchar(255) DEFAULT NULL COMMENT '网址',
 #   `category_name` varchar(255) DEFAULT NULL COMMENT '类别',
 #   `comments` varchar(255) DEFAULT NULL COMMENT '神评',
-#   `time_param` varchar(255) DEFAULT NULL COMMENT '时间参数',
+#   `time_param` int(11) DEFAULT NULL COMMENT '时间参数',
 #   PRIMARY KEY (`Id`)
 # ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='内涵女神表';
 import datetime
@@ -28,7 +28,7 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 		port=3306,  
 		user='root',  
 		passwd='123456',  
-		db='duanzi',  
+		db='neihanduanzi',  
 		charset='utf8mb4'  
 	)  
 	  
@@ -101,4 +101,6 @@ def getContent():
 			time.sleep(30)
 		except Exception as e:
 			raise
-getContent()
+if __name__ == "__main__":
+
+	getContent()

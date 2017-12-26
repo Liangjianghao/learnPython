@@ -6,7 +6,6 @@ import json
 import sys
 import os
 import pymysql
-import sys
 import urllib
 import os.path
 
@@ -17,7 +16,7 @@ config = {
           'port':3306,
           'user':'root',
           'password':'123456',
-          'db':'duanzi',
+          'db':'neihanduanzi',
           'charset':'utf8mb4',
           'cursorclass':pymysql.cursors.DictCursor,
           }
@@ -28,7 +27,9 @@ try:
         # sql = "SELECT distinct url FROM (SELECT  * FROM duanzi.neihanHotTable order by digg_count desc) as mytable"
         # sql = "SELECT * FROM duanzi.neihanHotTable group by url order by digg_count desc"
         # sql='SELECT * FROM duanzi.neihanRemenTable where category_name="今天长这样" group by url order by digg_count desc ;'
-        sql='SELECT * FROM duanzi.neihanRemenTable group by url order by digg_count desc ;'
+        # sql1="SET GLOBAL sql_mode = '';"
+        # cursor.execute(sql1)
+        sql='SELECT * FROM neihanRemenTable group by url order by digg_count desc;'
         # sql = "SELECT * FROM duanzi.neihanHotTable"
         
         cursor.execute(sql)
@@ -46,10 +47,10 @@ print len(listResult)
 
 for index,each in enumerate(result):
 	category_name=each['category_name']
-	digg_count= str(int(each['digg_count'])/10000)+'w'
+	digg_count= str(int(each['digg_count'])/1000)+'k'
 	# print each['content']
 	# print each['comments']
-	path='/Volumes/my/test3/%s'%category_name
+	path='/Volumes/my/test6/%s'%category_name
 	isExists=os.path.exists(path)
 
 	if not isExists:
@@ -67,6 +68,9 @@ for index,each in enumerate(result):
 		comments=each['comments']
 		name=digg_count+'_'+each['comments']
 	print name
+
+	name=name.replace('/','')
+  
 	path='%s/%s.mp4'%(path,name)
 	urllib.urlretrieve(downloadUrl, path)    
 

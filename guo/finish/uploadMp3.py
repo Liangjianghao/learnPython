@@ -126,18 +126,20 @@ def fillPage(driver):
 		# driver.refresh()
 		# driver.get("https://mp.weixin.qq.com/cgi-bin/operate_voice?oper=voice_get&t=media/audio_add&lang=zh_CN&token=%s"%tokenStr[0])
 		driver.get('https://mp.weixin.qq.com/cgi-bin/filepage?type=3&begin=0&count=21&t=media/list&token=%s&lang=zh_CN'%tokenStr[0])
-		resultA=EC.alert_is_present()(driver)
-		if resultA:
-			print ('重新加载1')
-			# time.sleep(2)
-			result.accept()
-		else:
-			print ('未出现提示框')
-		uploadBtn=driver.find_element_by_class_name('btn_primary')
+		# resultA=EC.alert_is_present()(driver)
+		# if resultA:
+		# 	print ('重新加载1')
+		# 	# time.sleep(2)
+		# 	result.accept()
+		# else:
+		# 	print ('未出现提示框')
+		uploadBtn=driver.find_element_by_class_name('weui-desktop-btn_primary')
 		uploadBtn.click()
-		driver.switch_to_window(driver.window_handles[1])
-		time.sleep(2)
-		print (driver.title)
+		time.sleep(3)
+		
+		# driver.switch_to_window(driver.window_handles[1])
+		# time.sleep(2)
+		# print (driver.title)
 
 		result=EC.alert_is_present()(driver)
 		if result:
@@ -145,46 +147,48 @@ def fillPage(driver):
 			# time.sleep(2)
 			result.accept()
 		else:
-			print ('未出现提示框')
+			print ('未出现提示框123')
 		time.sleep(2)
+		driver.switch_to_alert()
 		print (driver.current_url)
 		name=cutStr(fileName)
 		print ('fileName'+fileName)
 		print ('name-'+name)
-		titleInput = driver.find_element_by_id("title")
+		titleInput = driver.find_element_by_class_name("weui-desktop-form__input")
 		titleInput.send_keys(name)
 		time.sleep(3)
 
-		xiaoBtn=driver.find_elements_by_class_name('icon_radio')
-		# print len(contentList2)
+		xiaoBtn=driver.find_elements_by_class_name('weui-desktop-form__check-label')
 		xiaoBtn[3].click()
 		time.sleep(3)
 
 		upload=driver.find_elements_by_tag_name('input')
 		print (len(upload))
 
-		# JavascriptExecutor jse=(JavascriptExecutor)driver
-		# jse.executeScript('scroll(0,250)')
-
 		upload[22].send_keys(filepath)  # send_keys
 		time.sleep(120)
-		# time.sleep(2)
-		# WebDriverWait wait = new WebDriverWait(driver, 15);
-		# wait.until(ExpectedConditions.elementToBeClickable(By.id("submit_btn")));
-		# WebDriverWait wait = new WebDriverWait(driver,15)
 
-		js="var q=document.documentElement.scrollTop=150"  
+		# weui-desktop-dialog__wrp weui-desktop-dialog_simple
+
+		# js="var q=document.documentElement.scrollTop=10000"  
+		js="var q=document.getElementsByClassName('weui-desktop-dialog_simple')[0].scrollTop=100000" 
+
 		driver.execute_script(js) 
+		# js = "window.scrollTo(0,document.body.scrollHeight)" 
+		# driver.execute_script(js)
+
+
 
 		time.sleep(10)
 
-		FinishBtn=driver.find_element_by_id('submit_btn')
-		FinishBtn.click()
+		FinishBtn=driver.find_elements_by_class_name('weui-desktop-btn_primary')
+		# print (len(FinishBtn))
+		FinishBtn[1].click()
 		time.sleep(10)
 		os.remove(filepath)
 
-		driver.close()
-		driver.switch_to_window(driver.window_handles[0])
+		# driver.close()
+		# driver.switch_to_window(driver.window_handles[0])
 
 		if index==7:
 			break

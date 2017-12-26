@@ -4,7 +4,7 @@ import json
 import random
 from qqbot import QQBotSlot as qqbotslot, RunBot
 import requests
-import searchm
+# import searchm
 import fh
 KEY='70a315f07d324b3ea02cf21d13796605'
 def answerQ(question):
@@ -36,7 +36,7 @@ def selectChatContent(content_type):
 		port=3306,  
 		user='root',  
 		passwd='31415926',  
-		db='neihan',  
+		db='neihanduanzi',  
 		charset='utf8'  
 	)  
 	  
@@ -46,7 +46,7 @@ def selectChatContent(content_type):
 	# createtime=now.strftime('%Y-%m-%d %H:%M:%S')  
 	# 查询数据  
 	try:
-		sql = "SELECT * from duanzi"
+		sql = "SELECT * from neihanduanzi"
 		cursor.execute(sql)  
 		result = cursor.fetchall()
 		# print result
@@ -74,13 +74,20 @@ def getrandom():
 	t=random.randint(0, len(thelist))
 	print t
 	return thelist[t]
+def downLoadMovie(name):
+	downLoadMovie.download(name)
 
 @qqbotslot
 def onQQMessage(bot, contact, member, content):
     # if '@ME' in content:
-    print '123'
+    # print '123'
 	if '段子' in content:
 	    bot.SendTo(contact, '%s'%getrandom())
+	elif 'hi robot' in content:
+	    bot.SendTo(contact, '主人 有什么吩咐？')
+	elif '下载' in content or '电影' in content:
+		name=content.split(' ')[1]
+	    bot.SendTo(contact, '%s'%downLoadMovie(name))
 	elif 'fh ' in content:
 		detail=content.replace('fh ','')
 		if fh.searchFH(detail):

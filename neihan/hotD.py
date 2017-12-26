@@ -28,7 +28,7 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 		port=3306,  
 		user='root',  
 		passwd='123456',  
-		db='duanzi',  
+		db='neihanduanzi',  
 		charset='utf8mb4'  
 	)  
 	  
@@ -38,7 +38,7 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 	createtime=now.strftime('%Y-%m-%d %H:%M:%S')  
 	# 插入数据  
 	sql = "INSERT INTO neihanRemenTable (create_time,digg_count,content,url,category_name,comments,time_param) VALUES ( '%s', '%s', '%s','%s','%s','%s','%s')"  
-	print sql
+	# print sql
 	# create_time = pymysql.escape_string(create_time)
 	# print create_time
 	# content_type = pymysql.escape_string(content_type)
@@ -52,7 +52,7 @@ def insertChatContent(create_time,digg_count,content,url,category_name,comments,
 	# print data
 	cursor.execute(sql % data)  
 	connect.commit()  
-	print('insert success', cursor.rowcount, ' record')
+	# print('insert success', cursor.rowcount, ' record')
 
 
 def getDateUnix():
@@ -65,8 +65,9 @@ def getUrl():
 	return 'http://is.snssdk.com/neihan/stream/mix/v1/?tag=joke&iid=12316421155&os_version=10.1.1&os_api=18&live_sdk_version=220&channel=App%%20Store&idfa=E8131C7D-8AD5-45A0-8E6A-5F97A90CA5A9&device_platform=iphone&app_name=joke_essay&vid=20FC79DA-3103-42B3-A92E-F2D58B8DFD34&openudid=25adf6c3bb1f51523606523f4252e49e3c619921&device_type=iPhone9,1&device_id=30277977392&ac=WIFI&screen_width=750&aid=7&version_code=6.4.1&content_type=-101&count=30&double_col_mode=0&essence=1&latitude=31.07387527647243&longitude=121.4869829908048&max_time=%s&message_cursor=175514038&mpic=1&video_cdn_first=1'%(getDateUnix())
 print getUrl()	
 def getContent():
-	maxtime=1512644514
-	while maxtime>1511749478:
+	maxtime=time.time()
+	mintime=time.time()-86400
+	while maxtime>mintime:
 		try:
 			maxtime=maxtime-2
 			url='http://is.snssdk.com/neihan/stream/mix/v1/?tag=joke&iid=12316421155&os_version=10.1.1&os_api=18&live_sdk_version=220&channel=App%%20Store&idfa=E8131C7D-8AD5-45A0-8E6A-5F97A90CA5A9&device_platform=iphone&app_name=joke_essay&vid=20FC79DA-3103-42B3-A92E-F2D58B8DFD34&openudid=25adf6c3bb1f51523606523f4252e49e3c619921&device_type=iPhone9,1&device_id=30277977392&ac=WIFI&screen_width=750&aid=7&version_code=6.4.1&content_type=-101&count=30&double_col_mode=0&essence=1&latitude=31.07387527647243&longitude=121.4869829908048&max_time=%s&message_cursor=175514038&mpic=1&video_cdn_first=1'%maxtime
@@ -108,7 +109,9 @@ def getContent():
 									insertChatContent(joker['group']['create_time'],joker['group']['digg_count'],content,joker['group']['download_url'],category_name,comments,str(maxtime))
 							# bury_count 踩 comment_count 评论 share_count 转发 comments array。count》0 神评 category_name 类型 
 							# share_url for 101
-			time.sleep(30)
+			# time.sleep(30)
 		except Exception as e:
 			raise
-getContent()
+if __name__ == "__main__":
+
+	getContent()
