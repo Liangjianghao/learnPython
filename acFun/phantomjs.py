@@ -11,6 +11,7 @@ import sys
 from selenium import webdriver
 reload(sys)
 sys.setdefaultencoding('utf8')
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 # def login():
@@ -30,7 +31,10 @@ sys.setdefaultencoding('utf8')
 # 	print driver.page_source
 # login()
 def login():
-	driver = webdriver.PhantomJS()
+	dcap = dict(DesiredCapabilities.PHANTOMJS)
+	dcap["phantomjs.page.settings.userAgent"] = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0 ")
+	driver = webdriver.PhantomJS(desired_capabilities=dcap)
 	# driver = webdriver.Chrome()
 	driver.get("https://www.douban.com/")
 	elemZH = driver.find_element_by_id("form_email")
